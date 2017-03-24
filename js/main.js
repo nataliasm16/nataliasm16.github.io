@@ -1,8 +1,6 @@
 
 // Variables de entorno
-var heightPadding = 20,
-  currentWindowHeight = 0,
-  numberPortfolio = 0;
+var heightPadding = 0, currentWindowHeight = 0, numberPortfolio = 0;
 
 // Frenar propagación del evento
 var stopPropagation = function stopPropagation(e)
@@ -27,8 +25,9 @@ var createNavigation = function createNavigation()
 
 		// Añadir bola si es necesario
 		if (i < (categories.length - 1))
-			container.append('<li class="circle"><i class="fa fa-circle"' +
-				' aria-hidden="true"></i></li>');
+		{
+			container.append('<li class="circle"><i class="fa fa-circle" aria-hidden="true"></i></li>');
+		}
 	}
 };
 
@@ -55,9 +54,13 @@ var loadContent = function loadContent()
 var calculatePortfolio = function calculatePortfolio(currentWidth)
 {
 	if (currentWidth > 0 && currentWidth < 600)
+	{
 		numberPortfolio = 1;
+	}
 	else if (currentWidth >= 600 && currentWidth <= 768)
+	{
 		numberPortfolio = 2;
+	}
 	else numberPortfolio = 3;
 };
 
@@ -90,17 +93,29 @@ var resizeWindow = function resizeWindow(e)
 	// Generar valor de portfolio desde anchura
 	var newNumberPortfolio = 0;
 	if (numberPortfolio === 1 && widthNav >= 600 && widthNav <= 768)
+	{
 		newNumberPortfolio = 2;
+	}
 	else if (numberPortfolio === 1 && widthNav > 768)
+	{
 		newNumberPortfolio = 3;
+	}
 	else if (numberPortfolio === 2 && widthNav > 768)
+	{
 		newNumberPortfolio = 3;
+	}
 	else if (numberPortfolio === 2 && widthNav < 600)
+	{
 		newNumberPortfolio = 1;
+	}
 	else if (numberPortfolio === 3 && widthNav >= 600 && widthNav <= 768)
+	{
 		newNumberPortfolio = 2;
+	}
 	else if (numberPortfolio === 3 && widthNav < 600)
+	{
 		newNumberPortfolio = 1;
+	}
 
 	// Cambiar portfolio si realmente ha cambiado
 	if (newNumberPortfolio !== 0 && newNumberPortfolio !== numberPortfolio)
@@ -115,7 +130,9 @@ $(document).ready(function()
 {	
 	// Calcular altura de la barra superior
 	if ($('.browserupgrade').length > 0)
+	{
 		heightPadding += ($('.browserupgrade').height() + 30);
+	}
 
 	// Ejecutar resize del background
 	resizeBackground(window.innerHeight);

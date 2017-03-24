@@ -86,10 +86,18 @@ var thumbnailHoverOut = function thumbnailHoverOut(e)
 // Generar Thumbnails
 var createThumbnails = function createThumbnails(numberOfColumns)
 {
-	var works;
-
+	
 	// Generar lista de trabajos si hay filtro
-	if (currentFilter === null) works = info_list['works'];
+	var works;
+	if (currentFilter === null)
+	{
+		works = [];
+		for (var i = 0; i < info_list['works'].length; i++)
+		{
+			if (info_list['works'][i]['displayed'] === 1) 
+				works.push(info_list['works'][i]);
+		}
+	}
 	else 
 	{
 		works = [];
@@ -112,11 +120,12 @@ var createThumbnails = function createThumbnails(numberOfColumns)
 
 	for (var i = 0; i < rows; i++)
 	{
-		var row;
+		
 		var column = (worksNumber < numberOfColumns) ? worksNumber : numberOfColumns;
 		var columns = worksContainer;
 
 		// Generar fila de forma apropiada
+		var row;
 		if (column === 3) row = $('<div>', {'class': 'row'});
 		else if (column === 2) row = $('<div>', {'class': 'row two'});
 		else row = $('<div>', {'class': 'row one'});
@@ -162,6 +171,8 @@ var createThumbnails = function createThumbnails(numberOfColumns)
 			row.append(divThumb);
 			worksContainer++;
 		}
+
+		// Anadir fila
 		container.append(row);
 		worksNumber -= column;
 	}
