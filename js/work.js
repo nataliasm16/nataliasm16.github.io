@@ -414,9 +414,12 @@ var thumbnailClick = function thumbnailClick(e)
 		container.html(containerHTML);
 		workPanel.append(container);
 		var buttonMobile = $('<div>', {'id': 'workContainerCloseMobile'});
-		buttonMobile.html('<p>CERRAR PANEL</p>');
+		buttonMobile.html('<i class="fa fa-chevron-left" aria-hidden="true"</i>');
 		buttonMobile.click(destroyContainer);
 		workPanel.append(buttonMobile);
+
+		var buttonMobileHeight = $('#workContainerInfo h3').height() + 73;
+		buttonMobile.css('height', buttonMobileHeight);
 
 	}
 

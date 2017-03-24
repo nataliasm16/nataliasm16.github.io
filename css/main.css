@@ -259,22 +259,20 @@ html, body {
 }
 
 #workContainerCloseMobile {
-    pointer-events: auto;
-    cursor: pointer;
-    width: 320px;
-    height: 60px;
-    background: white;
-    margin-bottom: 40px;
-    border: 1px solid #e5e5e5;
+    width: 40px;
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 20px;
 }
 
-#workContainerCloseMobile > p {
-    text-align: center;
-    height: 60px;
-    line-height: 60px;
-    font-size: 1em;
-    margin: 0;
-    padding: 0;
+#workContainerCloseMobile > i {
+    font-size: 30px;
+    line-height: 30px;
+    display: table-cell;
+    vertical-align: middle;
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 #workContainerButtons {
@@ -370,10 +368,10 @@ html, body {
 }
 
 #workContainerInfo > h3 {
-    width: 90%;
+    width: 70%;
     text-align: center;
-    padding: 20px 5%;
-    margin: 0;
+    padding: 20px 15%;
+    margin: 15px 0;
     border-bottom: 1px solid #4d4d4d;
 }
 
@@ -981,6 +979,12 @@ footer {
     #about-photo {
         width: 320px;
         height: 320px;
+    }
+}
+
+@media (max-width: 400px) {
+    #workContainerInfo > h3 {
+        font-size: 1em;
     }
 }
 
