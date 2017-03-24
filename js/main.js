@@ -1,12 +1,13 @@
 
 // Variables de entorno
 var heightPadding = 0, currentWindowHeight = 0, numberPortfolio = 0;
+var rootHTML = null;
 
 // Generar animación lenta de scroll
 var scrollSlower = function scrollSlower(e)
 {
 	stopPropagation(e);
-	$('html, body').animate({
+	rootHTML.animate({
         scrollTop: $($.attr(this, 'href') ).offset().top
     }, 500);
 };
@@ -145,7 +146,9 @@ $(document).ready(function()
 	}
 
 	// Activar scroll
-	$(document).on('click', 'a', scrollSlower);
+	rootHTML = $('html, body');
+	$('a[href*=#]').click(scrollSlower);/*'click', function(event){     
+	$(document).on('click', 'a', scrollSlower);*/
 
 	// Ejecutar resize del background
 	resizeBackground(window.innerHeight);
