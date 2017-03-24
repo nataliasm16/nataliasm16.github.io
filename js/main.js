@@ -2,9 +2,19 @@
 // Variables de entorno
 var heightPadding = 0, currentWindowHeight = 0, numberPortfolio = 0;
 
+// Generar animación lenta de scroll
+var scrollSlower = function scrollSlower(e)
+{
+	stopPropagation(e);
+	$('html, body').animate({
+        scrollTop: $($.attr(this, 'href') ).offset().top
+    }, 500);
+};
+
 // Frenar propagación del evento
 var stopPropagation = function stopPropagation(e)
 {
+	if (typeof e.preventDefault == "function") e.preventDefault();
     if (typeof e.stopPropagation == "function") e.stopPropagation();
     else e.cancelBubble = true;
 };
@@ -133,6 +143,9 @@ $(document).ready(function()
 	{
 		heightPadding += ($('.browserupgrade').height() + 30);
 	}
+
+	// Activar scroll
+	$(document).on('click', 'a', scrollSlower);
 
 	// Ejecutar resize del background
 	resizeBackground(window.innerHeight);

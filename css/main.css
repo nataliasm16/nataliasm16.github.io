@@ -491,8 +491,7 @@ header > nav > ul > li > a {
     cursor: pointer;
 }
 
-header > nav > ul > li > a:hover,
-header > nav > ul > li > a:focus {
+header > nav > ul > li > a:hover {
     color: #191919;
     font-weight: 800;
 }
