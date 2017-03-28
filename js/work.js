@@ -1,156 +1,109 @@
 
 // Variables de entorno
-var currentDisplayed = 0;
-var currentImages = 0;
-var currentInformation = null; var timerWork = null;
-var currentDimensions = {"width": 0, "height": 0};
-var currentWindow = {"width": 0, "height": 0};
+var currentDisplayed = 0,
+	currentImages = 0,
+	currentInformation = null,
+	currentDimensions = {"width": 0, "height": 0},
+	currentWindow = {"width": 0, "height": 0};
 
-// Ejecutar animacion para cambiar a imagen
-var changePhoto = function changePhoto(e)
+// Mostrar siguiente foto
+var showNextPicture = function showNextPicture(e)
 {
-	// Frenar timer
-	animateWorkStop();
 	stopPropagation(e);
 
-	// Conseguir posicion
-	var p = $(e.currentTarget).data('position');
-
-	// No hacer nada si ya esta visible
-	if (p === currentDisplayed) return;
-
-	// Ejecutar animacion
-	animateWork(p);
-};
-
-// Ejecutar animacion de las imagenes
-var animateWork = function animateWork(position)
-{
-  	// Frenar timer antes de tiempo
-  	if (currentInformation === null) return;
-
-  	// Escoger container
-	var ch = $('#workContainerPhoto').children();
-
-	// Buscar posicion mostrada / escondida
-	var positions = currentImages - 1;
+	// Buscar posicion a mostrar
+	var positions = currentImages.length - 1;
 	var positionBack = currentDisplayed;
-	var positionIn;
-	if (typeof position !== 'undefined') positionIn = position;
-	else positionIn = (positionBack < positions) ? positionBack + 1 : 0;
-
-	// Cambiar bubbles
-	var prevBubble = $('[data-position="' + currentDisplayed + '"]');
-	prevBubble.removeClass('containerBubbleSelected');
-	prevBubble.empty();
-	var nextBubble = $('[data-position="' + positionIn + '"]');
-	nextBubble.addClass('containerBubbleSelected');
-	nextBubble.html('<div class="containerBubbleFill"></div>');
-
-	// Guardar posiciones
+	var positionIn = (positionBack < positions) ? positionBack + 1 : 0;
 	currentDisplayed = positionIn;
-	
-	// Calcular dimensiones
-	if (window.innerWidth > 1023) resizeContainerDesktop();
-	else resizeContainerMobile();
 
-	// Animar posiciones
-	$(ch[positionBack]).hide();
-	$(ch[positionIn]).fadeIn();
+	// Cambiar imagen
+	var containerPicture = $('#fnWorkPanelValuesPhotoDetail img');
+	containerPicture.attr('src', currentImages[currentDisplayed]);
 
-	// Comenzar timer
-  	timerWork = setTimeout(animateWork, 10000);
+	// Redimensionar foto
+	resizeContainerDetail();
 };
 
-// Crear timer para animateWork
-var animateWorkStart = function animateWorkStart()
+// Mostrar anterior foto
+var showPreviousPicture = function showPreviousPicture(e)
 {
-	timerWork = setTimeout(animateWork, 10000);
-};
-
-// Destruir timer para animateWork
-var animateWorkStop = function animateWorkStop()
-{
-	if (timerWork !== null)
-	{
-		clearTimeout(timerWork);
-  		timerWork = null;	
-	}
-}
-
-// Destruir informacion del trabajo
-var destroyInformation = function destroyInformation(e)
-{
-	// Comenzar timer
-	if (currentImages > 1) animateWorkStart();
 	stopPropagation(e);
 
-	// Cambiar icono del boton
-	var button = $(e.currentTarget);
-	var buttonI = $(button.children()[0]);
-	buttonI.removeClass('fa-eye-slash');
-	buttonI.addClass('fa-eye');
+	// Buscar posicion a mostrar
+	var positions = currentImages.length - 1;
+	var positionBack = currentDisplayed;
+	var positionIn = (positionBack > 0) ? positionBack - 1 : positions;
+	currentDisplayed = positionIn;
 
-	// Asignar handlers
-	var bubbles = $('.containerBubble');
-	bubbles.removeClass('buttonDisabled');
-	bubbles.click(changePhoto);
-	button.off('click', destroyInformation);
-	button.click(showInformation);
+	// Cambiar imagen
+	var containerPicture = $('#fnWorkPanelValuesPhotoDetail img');
+	containerPicture.attr('src', currentImages[currentDisplayed]);
 
-	// Destruir panel
-	$('#workContainerInfo').remove();
-
-	// Mostrar fotos
-	$('#workContainerPhoto').show();
-
-	// Calcular dimensiones
-	if (window.innerWidth > 1023) resizeContainerDesktop();
-	else resizeContainerMobile();
-
+	// Redimensionar foto
+	resizeContainerDetail();
 };
 
-// Mostrar informacion del trabajo
-var showInformation = function showInformation(e)
+// Destruir panel de fotos del trabajo
+var destroyPictures = function destroyPictures(e)
 {
-	// Frenar timer
-	if (currentImages > 1) animateWorkStop();
 	stopPropagation(e);
 
-	// Cambiar icono del boton
-	var button = $(e.currentTarget);
-	var buttonI = $(button.children()[0]);
-	buttonI.removeClass('fa-eye');
-	buttonI.addClass('fa-eye-slash');
+	// Borrar galeria
+	$('#fnWorkContainerDetail').remove();
 
-	// Asignar handlers
-	var bubbles = $('.containerBubble');
-	bubbles.off('click', changePhoto);
-	bubbles.addClass('buttonDisabled');
-	button.off('click', showInformation);
-	button.click(destroyInformation);
-
-	// Esconder fotos
-	$('#workContainerPhoto').hide();
-
-	// Crear panel de informacion
-	$('#workContainer').append('<div id="workContainerInfo"><h3>' + currentInformation['title'] + 
-		'</h3><div id="workContainerText">' + currentInformation['text'] + '</div></div>');
-
-	// Regenerar dimensiones
-	resizeInformation();
-
+	// Mostrar trabajo
+	$('#fnWorkContainer').show();
 };
 
-// Atribuir dimensiones a la informacion
-var resizeInformation = function resizeInformation()
+// Mostrar fotos del trabajo en cuestion
+var showPictures = function showPictures(e)
 {
-	if (window.innerWidth > 1023)
-	{
-		$('#workContainerInfo').css('width', (window.innerWidth - 84)/3).css('height', parseInt(window.innerHeight/2));
-		var heightText = parseInt(window.innerHeight/2) - ($('#workContainerInfo h3').height() + 40);
-		$('#workContainerText').css('height', heightText);	
-	}
+	stopPropagation(e);
+
+	// Esconder Trabajo
+	$('#fnWorkContainer').hide();
+
+	// Mostrar imagenes
+	var fnContainer = $('<div>', {'id': 'fnWorkContainerDetail', 'class': 'fullscreen'});
+	var wkContainer = $('<div>', {'class': 'fullscreenPanel'});
+	fnContainer.append(wkContainer);
+	$('body').append(fnContainer);
+
+	// Anadir capas al background
+	var workDisabled = $('<div>', {'class': 'fullscreenPanelDisabled'});
+	wkContainer.append(workDisabled);
+	workPanel = $('<div>', {'id': 'fnWorkPanelValuesDetail', 'class': 'fullscreenPanelValues'});
+	wkContainer.append(workPanel);
+
+	// Generar container según la primera imagen
+	var container = $('<div>', {'id': 'fnWorkPanelValuesContainerDetail'});
+	var containerArrowLeft = $('<div>', {'class': 'fnWorkPanelValuesArrow'});
+	var containerArrowLeftHand = $('<i>', {'class': 'fa fa-chevron-left'});
+	containerArrowLeftHand.click(showPreviousPicture);
+	containerArrowLeft.append(containerArrowLeftHand);
+	container.append(containerArrowLeft);
+
+	var containerPhoto = $('<div>', {'id': 'fnWorkPanelValuesPhotoDetail'});
+	containerPhoto.html('<img src="' + currentImages[0] + '" alt="Miniatura de ' + 
+		currentInformation['title'] + '"/>');
+	container.append(containerPhoto);
+
+	var containerArrowRight = $('<div>', {'class': 'fnWorkPanelValuesArrow'});
+	var containerArrowRightHand = $('<i>', {'class': 'fa fa-chevron-right'});
+	containerArrowRightHand.click(showNextPicture);
+	containerArrowRight.append(containerArrowRightHand);
+	container.append(containerArrowRight);
+	workPanel.append(container);
+
+	// Generar boton de cerrar
+	var buttonClose = $('<div>', {'id': 'fnWorkPanelValuesClose'});
+	buttonClose.html('<i class="fa fa-close" aria-hidden="true"</i>');
+	buttonClose.click(destroyPictures);
+	containerArrowRight.append(buttonClose);
+
+	// Detectar evento de resize en el navegador
+	resizeContainerDetail();
 };
 
 // Regenerar dimensiones del contenedor - Mobile
@@ -160,40 +113,124 @@ var resizeContainerMobile = function resizeContainerMobile()
 	// Detectar que se ha pasado a Desktop
 	if (window.innerWidth > 1023)
 	{
-		var workPanel = $('#workContainerPanel');
-		workPanel.removeClass('workContainerPanelMobile');
+		var workPanel = $('#fnWorkPanelValues');
+		workPanel.removeClass('fullscreenPanelValuesMobile');
 		workPanel.empty();
 		thumbnailClick();
 		return;
 	}
 
 	// Ajustar container a fullscreen
-	var container = $('#workContainer');
+	var container = $('#fnWorkPanelValuesContainer');
 	var widthContainer = window.innerWidth - 80;
 	if (container.width() !== widthContainer) container.css('width', widthContainer);
 
-	var change = (currentWindow.width !== window.innerWidth || currentWindow.height !== window.innerHeight);
+	if (currentWindow.width === widthContainer && currentWindow.height === window.innerHeight) return;
 
-	if (change)
-	{
-
-		// Guardar dimensiones actuales
-		currentWindow.width = window.innerWidth;
+	// Guardar valores
+	if (currentWindow.width !== widthContainer)
+		currentWindow.width = widthContainer;
+	if (currentWindow.height !== window.innerHeight)
 		currentWindow.height = window.innerHeight;
 
-		var heightContainer = 0;
-		var containerPhotos = container.children();
-		for (var i = 0; i < containerPhotos.length; i++)
-		{
-			var ar = currentInformation.photos[i].height / 
-				currentInformation.photos[i].width;
-			if (i !== 0) heightContainer += 60;
-			var heightPhoto = parseInt(ar * widthContainer);
-			$(containerPhotos[i]).css('width', widthContainer).css('height', heightPhoto);
-			heightContainer += heightPhoto;
-		}
-		container.css('height', heightContainer);
+	var heightContainer = 0, containerPhotos = container.children();
+	for (var i = 0; i < containerPhotos.length; i++)
+	{
+		var ar = currentInformation.photos[i].height / 
+			currentInformation.photos[i].width;
+		if (i !== 0) heightContainer += 60;
+		var heightPhoto = parseInt(ar * widthContainer);
+		$(containerPhotos[i]).css('width', widthContainer).css('height', heightPhoto);
+		heightContainer += heightPhoto;
 	}
+	container.css('height', heightContainer);
+};
+
+// Regenerar alto segun ancho de la foto
+var resizePhotoDetailHeight = function resizePhotoDetailWidth(width)
+{
+	if (width > currentInformation.photos[currentDisplayed].width)
+	{
+		return (currentInformation.photos[currentDisplayed].width / width) * 
+			currentInformation.photos[currentDisplayed].height;
+	}
+	else
+	{
+		return (width / currentInformation.photos[currentDisplayed].width) * 
+			currentInformation.photos[currentDisplayed].height;	
+	}
+}
+
+// Regenerar ancho segun alto de la foto
+var resizePhotoDetailWidth = function resizePhotoDetailWidth(height)
+{
+	if (height > currentInformation.photos[currentDisplayed].height)
+	{
+		return (currentInformation.photos[currentDisplayed].height / height) * 
+			currentInformation.photos[currentDisplayed].width;
+	}
+	else
+	{
+		return (height / currentInformation.photos[currentDisplayed].height) * 
+			currentInformation.photos[currentDisplayed].width;	
+	}
+}
+
+// Regenerar dimensiones del contenedor - Desktop Detail
+var resizeContainerDetail = function resizeContainerDetail()
+{
+
+	// Detectar que el detalle esta mostrado
+	var workPanelDetail = $('#fnWorkContainerDetail');
+	if (workPanelDetail.length === 0) return;
+
+	// Detectar que se ha pasado a Desktop
+	if (window.innerWidth < 1024)
+	{
+		var workPanelDetail = $('#fnWorkContainerDetail');
+		if (workPanelDetail.length > 0)
+		{
+			workPanelDetail.remove();
+			$('#fnWorkContainer').show();
+		}
+		return;
+	}
+
+	// Asignar variables
+	var heightDiv = 0, widthDiv = 0;
+	var widthMaxContainer = (window.innerWidth < 2080) ? window.innerWidth : 2080;
+
+	// Coger dimensiones de la foto mostrada
+	if (currentInformation.photos[currentDisplayed].width > 
+		currentInformation.photos[currentDisplayed].height)
+	{
+		widthDiv = widthMaxContainer - 160;
+		heightDiv = resizePhotoDetailHeight(widthDiv);
+
+		// Comprobar que no se pasa de altura
+		if (heightDiv > window.innerHeight - (window.innerHeight * 0.10))
+		{
+			heightDiv = window.innerHeight - (window.innerHeight * 0.10);
+			widthDiv = resizePhotoDetailWidth(heightDiv); 
+		}
+	}
+	else
+	{
+		heightDiv = window.innerHeight - (window.innerHeight * 0.10);
+		widthDiv = resizePhotoDetailWidth(heightDiv);
+
+		// Comprobar que no se pasa de anchura
+		if (widthDiv > widthMaxContainer - 160)
+		{
+			widthDiv = widthMaxContainer - 160;
+			heightDiv = resizePhotoDetailHeight(widthDiv);
+		}
+	}
+
+	// Asignar dimensiones a la foto
+	var containerPhoto = $('#fnWorkPanelValuesPhotoDetail');
+	containerPhoto.css('width', widthDiv).css('height', heightDiv);
+
 };
 
 // Regenerar dimensiones del contenedor - Desktop
@@ -203,75 +240,65 @@ var resizeContainerDesktop = function resizeContainerDesktop()
 	// Detectar que se ha pasado a Desktop
 	if (window.innerWidth < 1024)
 	{
-		var workPanel = $('#workContainerPanel');
+		var workPanelDetail = $('#fnWorkContainerDetail');
+		if (workPanelDetail.length > 0)
+		{
+			workPanelDetail.remove();
+			$('#fnWorkContainer').show();
+		}
+		var workPanel = $('#fnWorkPanelValues');
 		workPanel.empty();
 		thumbnailClick();
 		return;
 	}
 
-	// Ajustar container a fullscreen
-	var container = $('#workContainer');
-	if (container.width() !== window.innerWidth - 80)
-		container.css('width', window.innerWidth - 80);
-	if (container.height() !== window.innerHeight)
-		container.css('height', window.innerHeight);
+	if (currentWindow.width === window.innerWidth && currentWindow.height === window.innerHeight) return;
 
-	var panelButtons = $('#workContainerButtons');
-	if (panelButtons.height() !== window.innerHeight)
-		panelButtons.css('height', window.innerHeight);
+	// Guardar valores
+	if (currentWindow.width !== window.innerWidth)
+		currentWindow.width = window.innerWidth;
+	if (currentWindow.height !== window.innerHeight)
+		currentWindow.height = window.innerHeight;
 
-	var panelSelections = $('#workContainerSelections');
-	if (panelSelections.height() !== window.innerHeight)
-		panelSelections.css('height', window.innerHeight - 84);
+	// Coger dimensiones de la primera foto
+	var ar = currentInformation.photos[0].width / 
+	currentInformation.photos[0].height;
 
-	var containerBubbles = $('#workContainerBubbles');
-	var prevHeight = containerBubbles.height();
-	if (prevHeight >= window.innerHeight - 84) containerBubbles.css('margin-top', 0);
-	else containerBubbles.css('margin-top', ((window.innerHeight - 84) - (prevHeight + 80))/2);
+	// Asignar variables
+	var heightDiv = 0, widthDiv = 0;
+	var widthMaxContainer = (window.innerWidth < 1200) ? window.innerWidth : 1200;
 
-	var ar = currentInformation.photos[currentDisplayed].width / 
-		currentInformation.photos[currentDisplayed].height;
+	// Calcular informacion de la foto
+	var widthPanelInfo = parseInt((widthMaxContainer - 80) * 0.35);
+	var maxHeightPanel = parseInt(window.innerHeight - 180);
+	widthDiv = widthMaxContainer - (widthPanelInfo + 80);
 
-	var change = (currentInformation.photos[currentDisplayed].width !== currentDimensions.width ||
-		currentInformation.photos[currentDisplayed].height !== currentDimensions.height ||
-		currentWindow.width !== window.innerWidth || currentWindow.height !== window.innerHeight);
-	
-	if (change)
+	// Calcular altura de los elementos
+	heightDiv = widthDiv / ar;
+
+	// Calcular que no se pase del limite de alto
+	if (heightDiv > maxHeightPanel)
 	{
-
-		// Guardar nuevas dimensiones
-		currentDimensions.width = currentInformation.photos[currentDisplayed].width;
-		currentDimensions.height = currentInformation.photos[currentDisplayed].height;
-
-		// Altura sin boton de cerrar
-		var heightDiv = window.innerHeight - 160;
-		var widthDiv = 0;
-			
-		// Foto es más alta que ancha
-		if (ar < 1) widthDiv = parseInt(ar * heightDiv);
-		else
-		{
-			if (parseInt(ar * heightDiv) > (window.innerWidth - 80))
-			{
-				widthDiv = window.innerWidth - 180;
-				heightDiv = parseInt(widthDiv / ar);
-			}
-			else widthDiv = parseInt(ar * heightDiv);
-		}
-
-		// El container es más ancho o alto que la foto y se distorsiona
-		if (widthDiv > currentDimensions.width || heightDiv > currentDimensions.height)
-		{
-			widthDiv = currentDimensions.width;
-			heightDiv = currentDimensions.height;
-		}
-
-		$('#workContainerPhoto').css('width', widthDiv).css('height', heightDiv);
-		
+		heightDiv = maxHeightPanel;
+		widthDiv = heightDiv * ar;
 	}
 
-	// Reasignar dimensiones a informacion
-	if ($('#workContainerInfo').length > 0) resizeInformation();
+	// Asignar dimensiones a los paneles
+	var containerTextInfo = $('#fnWorkPanelValuesInfo');
+	var containerPhoto = $('#fnWorkPanelValuesPhoto');
+	containerTextInfo.css('width', widthPanelInfo);
+	containerTextInfo.css('max-height', maxHeightPanel);
+	containerTextInfo.css('height', heightDiv);
+	$('#fnWorkPanelValuesInfoText').css('height', heightDiv - ($('#fnWorkPanelValuesInfo h3').height() + 77));
+	containerPhoto.css('width', widthDiv).css('height', heightDiv);
+
+	// Ajustar container a fullscreen
+	var container = $('#fnWorkPanelValuesContainer');
+	if (container.width() !== widthMaxContainer)
+		container.css('width', widthMaxContainer);
+	if (container.height() !== heightDiv)
+		container.css('height', heightDiv);
+
 };
 
 // Esconder trabajo al hacer click sobre X
@@ -279,8 +306,8 @@ var destroyContainer = function destroyContainer(e)
 {
 	stopPropagation(e);
 	$(window).off("resize", resizeContainerDesktop);
+	$(window).off("resize", resizeContainerDetail);
 	$(window).off("resize", resizeContainerMobile);
-	animateWorkStop();
 	animateThumbnailsStart();
 
 	// Reiniciar valores
@@ -318,19 +345,19 @@ var thumbnailClick = function thumbnailClick(e)
 		body.css('top', '-' + currentScroll + 'px');
 		
 		// Anadir background fullscreen
-		var fullContainer = $('<div>', {'class': 'fullscreen'});
-		var workContainer = $('<div>', {'id': 'workContainerBig'});
-		fullContainer.append(workContainer);
-		body.append(fullContainer);
+		var fnContainer = $('<div>', {'id': 'fnWorkContainer', 'class': 'fullscreen'});
+		var wkContainer = $('<div>', {'class': 'fullscreenPanel'});
+		fnContainer.append(wkContainer);
+		body.append(fnContainer);
 
 		// Anadir capas al background
-		var workDisabled = $('<div>', {'id': 'workContainerDisabled'});
-		workContainer.append(workDisabled);
-		workPanel = $('<div>', {'id': 'workContainerPanel'});
-		workContainer.append(workPanel);
+		var workDisabled = $('<div>', {'class': 'fullscreenPanelDisabled'});
+		wkContainer.append(workDisabled);
+		workPanel = $('<div>', {'id': 'fnWorkPanelValues', 'class': 'fullscreenPanelValues'});
+		wkContainer.append(workPanel);
 
 	}
-	else workPanel = $('#workContainerPanel');
+	else workPanel = $('#fnWorkPanelValues');
 	
 	// Generar información del trabajo
 	if (currentInformation === null)
@@ -347,63 +374,44 @@ var thumbnailClick = function thumbnailClick(e)
 
 	if (window.innerWidth > 1023)
 	{
+
+		// Generar titulo
+		workPanel.append('<h1><object type="image/svg+xml" data="img/logo_black.svg" alt="Natalia Sanjuán Molinero Logo">' +
+			'<!-- Fallback en caso de fallo -->Natalia Sanjuán Molinero Logo </object></h1>');
+
 		// Generar container según la primera imagen
-		var container = $('<div>', {'id': 'workContainer'});
-		var containerHTML = '<div id="workContainerPhoto">';
-		for (var i = 0; i < currentImages.length; i++)
-		{
-			if (i === 0) containerHTML += '<img '; else containerHTML += '<img class="hid" ';
-			containerHTML += 'src="' + currentImages[i] + '" alt="Miniatura ' + (i + 1) + ' de ' + 
-				currentInformation['title'] + '"/>';
-		}
-		containerHTML += '</div>';
-		container.html(containerHTML);
+		var container = $('<div>', {'id': 'fnWorkPanelValuesContainer'});
+		var containerPhoto = $('<div>', {'id': 'fnWorkPanelValuesPhoto'});
+		containerPhoto.html('<img src="' + currentImages[0] + '" alt="Miniatura de ' + 
+			currentInformation['title'] + '"/>');
+		container.append(containerPhoto);
+		container.append('<div id="fnWorkPanelValuesInfo"><h3>' + currentInformation['title'] + 
+			'</h3><div id="fnWorkPanelValuesInfoText">' + currentInformation['text'] + '</div>');
 		workPanel.append(container);
 
-		// Generar panel de botones
-		var panelButtons = $('<div>', {'id': 'workContainerButtons'});
-		var workButton = $('<div>', {'id': 'workContainerCloseButton', 'class': 'workContainerButton'});
-		workButton.html('<i class="fa fa-times" aria-hidden="true"></i>');
-		workButton.click(destroyContainer);
-		panelButtons.append(workButton);
-		var workInfoButton = $('<div>', {'id': 'workContainerInfoButton', 'class': 'workContainerButton'});
-		workInfoButton.html('<i class="fa fa-eye" aria-hidden="true"></i>');
-		workInfoButton.click(showInformation);
-		panelButtons.append(workInfoButton);
+		// Generar handler de fotos
+		containerPhoto.click(showPictures);
 
-		// Generar panel de bubbles
-		if (currentImages.length > 1)
-		{
-			var panelSelections = $('<div>', {'id': 'workContainerSelections'});
-			var panelBubbles = $('<div>', {'id': 'workContainerBubbles'});
-			var heightPanel = 0;
-			for (var i = 0; i < currentImages.length; i++)
-			{
-				var classBubble = (i === 0) ? 'containerBubble containerBubbleSelected' : 'containerBubble';
-				var bubble = $('<div>', {'class': classBubble, 'data-position': i});
-				if (i === 0) bubble.append('<div class="containerBubbleFill"></div>');
-				else heightPanel += 15;
-				bubble.click(changePhoto);
-				panelBubbles.append(bubble);
-				heightPanel += 30;
-			}
-			panelBubbles.css('height', heightPanel);
-			panelSelections.append(panelBubbles);
-		}
-		panelButtons.append(panelSelections);
-		workPanel.append(panelButtons);
+		// Generar boton de cerrar
+		var workButtonCloseDiv = $('<div>', {'id': 'fnContainerBack'});
+		var workButtonClose = $('<p>');
+		workButtonClose.html('<i class="fa fa-chevron-left" aria-hidden="true"></i> Volver al portfolio');
+		workButtonClose.click(destroyContainer);
+		workButtonCloseDiv.append(workButtonClose);
+		workPanel.append(workButtonCloseDiv);
+
 	}
 	else
 	{
 		// Activar apariencia de movil
-		workPanel.addClass('workContainerPanelMobile');
+		workPanel.addClass('fullscreenPanelValuesMobile');
 		
 		// Crear panel de informacion
-		workPanel.append('<div id="workContainerInfo"><h3>' + currentInformation['title'] + 
-		'</h3><div id="workContainerText">' + currentInformation['text'] + '</div></div>');
+		workPanel.append('<div id="fnWorkPanelValuesInfo"><h3>' + currentInformation['title'] + 
+		'</h3><div id="fnWorkPanelValuesInfoText">' + currentInformation['text'] + '</div></div>');
 
 		// Crear imagenes
-		var container = $('<div>', {'id': 'workContainer'});
+		var container = $('<div>', {'id': 'fnWorkPanelValuesContainer'});
 		var containerHTML = '';
 		for (var i = 0; i < currentImages.length; i++)
 		{
@@ -413,12 +421,12 @@ var thumbnailClick = function thumbnailClick(e)
 		}
 		container.html(containerHTML);
 		workPanel.append(container);
-		var buttonMobile = $('<div>', {'id': 'workContainerCloseMobile'});
+		var buttonMobile = $('<div>', {'id': 'fnContainerBackMobile'});
 		buttonMobile.html('<i class="fa fa-chevron-left" aria-hidden="true"</i>');
 		buttonMobile.click(destroyContainer);
 		workPanel.append(buttonMobile);
 
-		var buttonMobileHeight = $('#workContainerInfo h3').height() + 73;
+		var buttonMobileHeight = $('#fnWorkPanelValuesInfo h3').height() + 73;
 		buttonMobile.css('height', buttonMobileHeight);
 
 	}
@@ -426,19 +434,17 @@ var thumbnailClick = function thumbnailClick(e)
 	// Detectar evento de resize en el navegador
 	if (window.innerWidth > 1023)
 	{
-		// Guardar dimensiones actuales
-		currentWindow.width = window.innerWidth;
-		currentWindow.height = window.innerHeight;
 
 		resizeContainerDesktop();
 		$(window).off('resize', resizeContainerMobile);
-		$(window).resize(resizeContainerDesktop);	
-		if (currentImages > 1) animateWorkStart();
+		$(window).resize(resizeContainerDesktop);
+		$(window).resize(resizeContainerDetail);
 	}
 	else
 	{
 		resizeContainerMobile();
 		$(window).off('resize', resizeContainerDesktop);
+		$(window).off('resize', resizeContainerDetail);
 		$(window).resize(resizeContainerMobile);
 	}
 };
