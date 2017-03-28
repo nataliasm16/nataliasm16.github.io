@@ -166,6 +166,7 @@ html, body {
 }
 
 .fullscreenPanelValues {
+    height: 100%;
     min-height: 100%;
     padding: 0;
     overflow: auto;
@@ -426,6 +427,7 @@ html, body {
 #fnWorkPanelValuesClose {
     width: 36px;
     position: absolute;
+    left: 22px;
     top: 0;
 }
 
