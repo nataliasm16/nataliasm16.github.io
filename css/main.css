@@ -216,6 +216,11 @@ html, body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: flex-start;
+    -moz-box-pack: flex-start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: flex-start;
+    justify-content: flex-start;
 }
 
 #fnWorkPanelValuesContainer {
@@ -294,6 +299,11 @@ html, body {
 #fnWorkPanelValues.fullscreenPanelValuesMobile > #fnWorkPanelValuesInfo {
     width: 100%;
     min-width: auto;
+    margin: 0;
+}
+
+#fnWorkPanelValues.fullscreenPanelValuesMobile > #fnWorkPanelValuesInfo > #fnWorkPanelValuesInfoText {
+    margin-bottom: 0px;
 }
 
 #fnWorkPanelValuesInfoText {
@@ -324,6 +334,7 @@ html, body {
     width: 100%;
     max-width: 1200px;
     height: 50px;
+    margin-bottom: 20px;
 }
 
 #fnContainerBack > p {
@@ -559,7 +570,6 @@ section > h2 {
     color: #191919;
     text-align: center;
     font-family: "Champagne Limousines";
-    font-size: 3em;
     height: 54px;
     line-height: 1em;
 }
@@ -983,6 +993,32 @@ footer {
 
 /* Media Queries */
 
+@media (min-width: 250px) {
+    #about-photo,
+    .row, .thumbnail {
+        width: 240px;
+    }
+    .thumbnail {
+        height: 152px;
+    }
+    #about-photo {
+        margin: 0 auto;
+        height: 240px;
+    }
+    header > h1,
+    header > nav {
+        width: 100%;
+    }
+    header > nav > ul > li {
+        font-size: 1.75em;
+        margin: 10px auto;
+    }
+    header > nav,
+    header > h1 {
+        margin-top: 5px;
+    }
+}
+
 @media (min-width: 300px) {
     #about-photo,
     .row, .thumbnail {
@@ -1050,6 +1086,10 @@ footer {
         -ms-flex-direction: column;
         flex-direction: column;
     }
+    section > h2,
+    #contact-info > h2 {
+        font-size: 1.5em;
+    }
 }
 
 @media (min-width: 431px) {
@@ -1062,6 +1102,10 @@ footer {
     }
     .thumbnail {
         height: 267px;
+    }
+    section > h2,
+    #contact-info > h2 {
+        font-size: 2.25em;
     }
 }
 
@@ -1116,10 +1160,6 @@ footer {
     #contact-info > h2 {
         margin-bottom: 50px;
     }
-    section > h2,
-    #contact-info > h2 {
-        font-size: 2.25em;
-    }
 }
 
 @media (min-width: 600px) {
@@ -1135,6 +1175,10 @@ footer {
     }
     .row {
         width: 590px;
+    }
+    section > h2,
+    #contact-info > h2 {
+        font-size: 3em;
     }
 }
 

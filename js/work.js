@@ -4,7 +4,8 @@ var currentDisplayed = 0,
 	currentImages = 0,
 	currentInformation = null,
 	currentDimensions = {"width": 0, "height": 0},
-	currentWindow = {"width": 0, "height": 0};
+	currentWindow = {"width": 0},
+	currentHeightBackMobile = 0;
 
 // Mostrar siguiente foto
 var showNextPicture = function showNextPicture(e)
@@ -125,13 +126,11 @@ var resizeContainerMobile = function resizeContainerMobile()
 	var widthContainer = window.innerWidth - 80;
 	if (container.width() !== widthContainer) container.css('width', widthContainer);
 
-	if (currentWindow.width === widthContainer && currentWindow.height === window.innerHeight) return;
+	if (currentWindow.width === widthContainer) return;
 
 	// Guardar valores
 	if (currentWindow.width !== widthContainer)
 		currentWindow.width = widthContainer;
-	if (currentWindow.height !== window.innerHeight)
-		currentWindow.height = window.innerHeight;
 
 	var heightContainer = 0, containerPhotos = container.children();
 	for (var i = 0; i < containerPhotos.length; i++)
@@ -144,6 +143,11 @@ var resizeContainerMobile = function resizeContainerMobile()
 		heightContainer += heightPhoto;
 	}
 	container.css('height', heightContainer);
+	var heightInfoText = $('#fnWorkPanelValuesInfo').height();
+	$('#fnWorkPanelValues').css('min-height',
+		heightContainer + currentHeightBackMobile + heightInfoText
+	);
+
 };
 
 // Regenerar alto segun ancho de la foto
@@ -252,13 +256,11 @@ var resizeContainerDesktop = function resizeContainerDesktop()
 		return;
 	}
 
-	if (currentWindow.width === window.innerWidth && currentWindow.height === window.innerHeight) return;
+	if (currentWindow.width === window.innerWidth) return;
 
 	// Guardar valores
 	if (currentWindow.width !== window.innerWidth)
 		currentWindow.width = window.innerWidth;
-	if (currentWindow.height !== window.innerHeight)
-		currentWindow.height = window.innerHeight;
 
 	// Coger dimensiones de la primera foto
 	var ar = currentInformation.photos[0].width / 
@@ -291,6 +293,7 @@ var resizeContainerDesktop = function resizeContainerDesktop()
 	containerTextInfo.css('height', heightDiv);
 	$('#fnWorkPanelValuesInfoText').css('height', heightDiv - ($('#fnWorkPanelValuesInfo h3').height() + 77));
 	containerPhoto.css('width', widthDiv).css('height', heightDiv);
+	$('#fnWorkPanelValues').css('min-height', 800);
 
 	// Ajustar container a fullscreen
 	var container = $('#fnWorkPanelValuesContainer');
@@ -426,8 +429,8 @@ var thumbnailClick = function thumbnailClick(e)
 		buttonMobile.click(destroyContainer);
 		workPanel.append(buttonMobile);
 
-		var buttonMobileHeight = $('#fnWorkPanelValuesInfo h3').height() + 73;
-		buttonMobile.css('height', buttonMobileHeight);
+		currentHeightBackMobile = $('#fnWorkPanelValuesInfo h3').height() + 73;
+		buttonMobile.css('height', currentHeightBackMobile);
 
 	}
 
