@@ -103,14 +103,6 @@ var info_works = {
 		],
 		"text": "<p>Ilustración diseñada para el día de la madre. Realizada mediante un caligrama; en donde se mezcla texto e ilustración.</p><p>Dibujada a mano, se mezcla el dibujo con un mini relato en el que el bebé habla a su futura madre. El empleo de acuarelas para la base, se mezcla con rotuladores negros de diferentes grosores tanto para el texto, como para el dibujo del vientre de la madre.</p>"
 	},
-	"escarabajo": {
-		"title": "ESCARABAJO",
-		"photos": [
-			{"width": 1920, "height": 1280},
-			{"width": 1920, "height": 1240}
-		],
-		"text": "<p>Transformación de un escarabajo mediante técnica libre.</p><p>Con diferentes posturas de bailarines de ballet se retocaron, manipularon y posicionaron de manera que se creara de nuevo la silueta del escarabajo pero con una visión artística. Además de crear la ilustración, hubo que manipular por separado cada una de las fotografías de los bailarines para que todas tuvieran el mismo color y saturación.</p><p>Trabajo realizado mediante Adobe Photoshop.</p>"
-	},
 	"fiestas_del_pilar_2015": {
 		"title": "FIESTAS DEL PILAR",
 		"photos": [
