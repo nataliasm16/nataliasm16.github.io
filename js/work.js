@@ -432,7 +432,7 @@ var thumbnailClick = function thumbnailClick(e)
 		buttonMobile.click(destroyContainer);
 		workPanel.append(buttonMobile);
 
-		currentHeightBackMobile = $('#fnWorkPanelValuesInfo h3').height() + 73;
+		currentHeightBackMobile = (($('#fnWorkPanelValuesInfo h3').height() + 50) * 1.3) - 8;
 		buttonMobile.css('height', currentHeightBackMobile);
 
 	}

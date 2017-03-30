@@ -295,14 +295,21 @@ html, body {
 #fnWorkPanelValuesInfo > h3 {
     width: 70%;
     text-align: center;
-    padding: 20px 15%;
-    margin: 15px 0;
+    padding: 0 15% 20px;
+    margin: 0;
+    font-family: "Champagne Limousines";
+    font-size: 2em;
+    line-height: 1.3em;
 }
 
 #fnWorkPanelValues.fullscreenPanelValuesMobile > #fnWorkPanelValuesInfo {
     width: 100%;
     min-width: auto;
     margin: 0;
+}
+
+#fnWorkPanelValues.fullscreenPanelValuesMobile > #fnWorkPanelValuesInfo > h3 {
+    margin-top: 30px;
 }
 
 #fnWorkPanelValues.fullscreenPanelValuesMobile > #fnWorkPanelValuesInfo > #fnWorkPanelValuesInfoText {
