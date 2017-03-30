@@ -555,7 +555,7 @@ header > nav > ul > li > a {
 
 header > nav > ul > li > a:hover {
     color: #191919;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 /* Secciones */
@@ -567,7 +567,7 @@ section {
 
 #contact-info > h2,
 section > h2 {
-    color: #191919;
+    color: black;
     text-align: center;
     font-family: "Champagne Limousines";
     height: 54px;
@@ -608,15 +608,15 @@ section > h2 {
     -webkit-flex-grow: 0;
     flex-grow: 0;
     cursor: pointer;
-    color: #ef82ab;
+    color: #ff9fda;
     -webkit-transition: .5s;
     transition: .5s;
 }
 
 #portfolio > nav > ul > .title:hover,
 #portfolio > nav > ul > .title.selected {
-    color: #191919;
-    font-weight: 800;
+    color: #e27fb5;
+    font-weight: 600;
 }
 
 #portfolio > nav > ul > .circle {
@@ -719,7 +719,7 @@ section > h2 {
 
 #about {
     margin-top: 70px;
-    background-color: #4d4d4d;
+    background-color: #3a3a3a;
     padding: 0 0 50px 0;
 }
 
