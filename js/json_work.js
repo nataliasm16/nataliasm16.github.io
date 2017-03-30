@@ -1,4 +1,12 @@
 var info_works = {
+    "escarabajo": {
+        "title": "ESCARABAJO",
+        "photos": [
+            {"width": 1920, "height": 1280},
+            {"width": 1920, "height": 1240}
+        ],
+        "text": "<p>Transformación de un escarabajo mediante técnica libre.</p><p>Con diferentes posturas de bailarines de ballet se retocaron, manipularon y posicionaron de manera que se creara de nuevo la silueta del escarabajo pero con una visión artística. Además de crear la ilustración, hubo que manipular por separado cada una de las fotografías de los bailarines para que todas tuvieran el mismo color y saturación.</p><p>Trabajo realizado mediante Adobe Photoshop.</p>"
+    },
 	"interior_exterior": {
 		"title": "INTERIOR / EXTERIOR",
 		"photos": [

@@ -27,6 +27,13 @@ var info_list = {
   ],
   "works": [
     {
+      "folder": "escarabajo",
+      "title": "ESCARABAJO",
+      "category": "ilustraciones",
+      "thumbnails": 0,
+      "displayed": 1
+    },
+    {
       "folder": "tortugas_marinas",
       "title": "TORTUGAS MARINAS",
       "category": "maquetacion",
