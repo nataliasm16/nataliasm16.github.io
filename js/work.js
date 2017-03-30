@@ -379,8 +379,11 @@ var thumbnailClick = function thumbnailClick(e)
 	{
 
 		// Generar titulo
-		workPanel.append('<h1><object type="image/svg+xml" data="img/logo_black.svg" alt="Natalia Sanjuán Molinero Logo">' +
-			'<!-- Fallback en caso de fallo -->Natalia Sanjuán Molinero Logo </object></h1>');
+		var containerTitle = $('<h1>');
+		containerTitle.html('<object type="image/svg+xml" data="img/logo_black.svg" alt="Natalia Sanjuán Molinero Logo">' +
+			'<!-- Fallback en caso de fallo -->Natalia Sanjuán Molinero Logo </object>');
+		containerTitle.click(destroyContainer);
+		workPanel.append(containerTitle);
 
 		// Generar container según la primera imagen
 		var container = $('<div>', {'id': 'fnWorkPanelValuesContainer'});
