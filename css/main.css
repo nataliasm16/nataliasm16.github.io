@@ -1314,7 +1314,7 @@ footer {
 @media (min-width: 940px) {
     #about-info {
         width: 510px;
-        margin-right: 0;
+        margin: 0;
     }
     #about-photo {
         margin: 35px 0 0 0;
@@ -1330,6 +1330,15 @@ footer {
     }
     .row {
         width: 940px;
+    }
+}
+
+@media(min-width: 1100px) {
+    #about-photo {
+        margin: 35px 0 0 80px;
+    }
+    #about-info {
+        margin: 0 80px 0 0;
     }
 }
 
@@ -1349,10 +1358,7 @@ footer {
         margin: 35px 0 0 80px;
     }
     #about-info {
-        margin-right: 80px;
-    }
-    #about-info {
-        margin: 0;
+        margin: 0 80px 0 0;
         width: 640px;
     }
     header > h1, header > nav {
